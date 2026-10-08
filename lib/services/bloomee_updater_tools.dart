@@ -167,7 +167,7 @@ Future<Map<String, dynamic>> sourceforgeUpdate(
 Future<Map<String, dynamic>> githubUpdate(
     {Duration timeout = const Duration(seconds: 6)}) async {
   final url =
-      'https://api.github.com/repos/HemantKArya/BloomeeTunes/releases/latest';
+      'https://api.github.com/repos/nightx24/Melora/releases/latest';
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   try {
     final response = await http.get(Uri.parse(url)).timeout(timeout);
@@ -212,64 +212,33 @@ Future<Map<String, dynamic>> githubUpdate(
   }
 }
 
-/// New public API: try GitHub first, then SourceForge; return a consistent map.
+/// New public API: check Melora's own GitHub releases and return a consistent map.
 Future<Map<String, dynamic>> getAppUpdates() async {
-  // Try GitHub first, then SourceForge, produce an `updates` map and attach changelogs.
-  Map<String, dynamic> updates;
   try {
-    updates = await githubUpdate();
-  } catch (e) {
-    log('GitHub check failed, trying SourceForge: $e', name: 'UpdaterTools');
-    try {
-      updates = await sourceforgeUpdate();
-    } catch (e2) {
-      log('SourceForge check failed: $e2', name: 'UpdaterTools');
-      // Final fallback: return structured failure map with current info
-      try {
-        final packageInfo = await PackageInfo.fromPlatform();
-        updates = {
-          'results': false,
-          'error': 'Failed to check remote releases',
-          'currVer': packageInfo.version,
-          'currBuild': packageInfo.buildNumber,
-          'source': 'none',
-        };
-      } catch (e3) {
-        updates = {
-          'results': false,
-          'error':
-              'Failed to check remote releases and failed to read local package info',
-          'source': 'none',
-        };
-      }
-    }
-  }
-
-  try {
-    // Contains the latest changelog read by the user. [eg. v2.11.6+171] (can be null)
-    final readChangelogs = await SettingsDAO(DBProvider.db)
-        .getSettingStr(SettingKeys.readChangelogs);
-    final currVer = "v${updates['currVer']}";
-    final newVer = "v${updates['newVer']}";
-
-    log('Current version: $currVer, New version: $newVer, Read changelogs: $readChangelogs',
-        name: 'UpdaterTools');
-
-    if (currVer == newVer &&
-        (readChangelogs == null || readChangelogs != currVer)) {
-      final changelogText = await fetchChangelog();
-      updates['changelogs'] = changelogText;
-    } else {
-      updates['changelogs'] = null;
-    }
-  } catch (e, st) {
-    log('Attaching changelog failed: $e\n$st', name: 'UpdaterTools');
+    final updates = await githubUpdate();
     updates['changelogs'] = null;
+    return updates;
+  } catch (e) {
+    log('Melora update check failed: $e', name: 'UpdaterTools');
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      return {
+        'results': false,
+        'error': 'Failed to check Melora releases',
+        'currVer': packageInfo.version,
+        'currBuild': packageInfo.buildNumber,
+        'source': 'none',
+        'changelogs': null,
+      };
+    } catch (_) {
+      return {
+        'results': false,
+        'error': 'Failed to check Melora releases and local package info',
+        'source': 'none',
+        'changelogs': null,
+      };
+    }
   }
-
-  // log('Update check completed: $updates', name: 'UpdaterTools');
-
-  return updates;
 }
 
 /// Fetch the project's CHANGELOG.md from the hosted GitHub Pages site.
@@ -277,7 +246,7 @@ Future<Map<String, dynamic>> getAppUpdates() async {
 Future<String?> fetchChangelog(
     {Duration timeout = const Duration(seconds: 6)}) async {
   const changelogUrl =
-      'https://hemantkarya.github.io/BloomeeTunes/CHANGELOG.md';
+      'https://raw.githubusercontent.com/nightx24/Melora/main/CHANGELOG.md';
   try {
     final response = await http.get(Uri.parse(changelogUrl)).timeout(timeout);
     if (response.statusCode == 200) {
