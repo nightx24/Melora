@@ -46,6 +46,13 @@ class NotificationDAO {
     return isarDB.notificationsDBs.where().sortByTimeDesc().findAll();
   }
 
+  Future<void> clearByType(String type) async {
+    final isarDB = await _db;
+    await isarDB.writeTxn(
+      () async => isarDB.notificationsDBs.filter().typeEqualTo(type).deleteAll(),
+    );
+  }
+
   Future<void> clearNotifications() async {
     final isarDB = await _db;
     await isarDB.writeTxn(
