@@ -67,6 +67,11 @@ android {
                 throw GradleException("Release signing is required. Configure android/key.properties and the Melora release keystore.")
             }
         }
+
+        debug {
+            // Use Android/Gradle's default debug signing configuration.
+            // This must not depend on the production Melora keystore.
+        }
     }
 
     packagingOptions {
