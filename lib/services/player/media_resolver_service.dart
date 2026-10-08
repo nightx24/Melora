@@ -96,27 +96,51 @@ class MediaResolverService {
         '(plugin: ${parts.pluginId}, id: ${parts.localId})',
         name: 'MediaResolverService');
 
+    final request = PluginRequest.contentResolver(
+      ContentResolverCommand.getStreams(id: parts.localId),
+    );
+
     PluginResponse response;
     try {
       response = await _pluginService.execute(
         pluginId: parts.pluginId,
-        request: PluginRequest.contentResolver(
-          ContentResolverCommand.getStreams(id: parts.localId),
-        ),
+        request: request,
       );
-    } on PluginException catch (e) {
-      if (e is PluginNotLoadedException) {
+    } on PluginNotLoadedException {
+      // Plugin bootstrap/load can race with the first playback request after
+      // startup or an auto-update. Recover once instead of failing playback.
+      try {
+        final available = await _pluginService.getAvailablePlugins();
+        final info = available.cast<dynamic?>().firstWhere(
+              (plugin) =>
+                  plugin != null && plugin.manifest.id == parts.pluginId,
+              orElse: () => null,
+            );
+        if (info != null) {
+          await _pluginService.loadPlugin(
+            pluginId: parts.pluginId,
+            pluginType: info.pluginType,
+          );
+          response = await _pluginService.execute(
+            pluginId: parts.pluginId,
+            request: request,
+          );
+        } else {
+          rethrow;
+        }
+      } catch (retryError) {
         GlobalEventBus.instance.emitError(
           AppError.pluginNotLoaded(pluginId: parts.pluginId, mediaId: track.id),
         );
-      } else {
-        GlobalEventBus.instance.emitError(
-          AppError.pluginError(
-            pluginId: parts.pluginId,
-            message: e.message,
-          ),
-        );
+        rethrow;
       }
+    } on PluginException catch (e) {
+      GlobalEventBus.instance.emitError(
+        AppError.pluginError(
+          pluginId: parts.pluginId,
+          message: e.message,
+        ),
+      );
       rethrow;
     }
 
