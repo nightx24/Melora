@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./assets/docs/bloomeetunes_new_banner.png" alt="BloomeeTunes Banner" width="100%">
+<img src="./assets/docs/bloomeetunes_new_banner.png" alt="Melora Banner" width="100%">
 
 # 🌸 Melora 
 
@@ -8,17 +8,16 @@
 
 **Maintainer:** `nightx24`  
 
-> **Melora** is a community-maintained fork of BloomeeTunes focused on bug fixes, maintenance, modernization, and additional improvements.  
+> **Melora** is a community-maintained fork of Melora focused on bug fixes, maintenance, modernization, and additional improvements.  
 > **Thanks to the original developer, Hemant Karya, for creating the project Melora builds upon.**
 
-<p align="center"><img src=https://img.shields.io/sourceforge/dt/bloomee?style=for-the-badge&logoSize=auto&label=DOWNLOADS(SF)
- /> <a href="https://github.com/nightx24/Melora/releases/latest"><img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/HemantKArya/BloomeeTunes/total?style=for-the-badge&label=DOWNLOADS(GH)" >
-<img alt="GitHub Release" src="https://img.shields.io/github/v/release/HemantKArya/BloomeeTunes?display_name=release&style=for-the-badge&color=f01d7c" ></a>
-<img alt="GitHub License" src="https://img.shields.io/github/license/HemantKArya/BloomeeTunes?style=for-the-badge&color=1881cc" > <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/HemantKArya/BloomeeTunes/checkout.yml?style=for-the-badge" > <br><img src=https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white > <img src=https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white /> <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"/>
+<p align="center"><a href="https://github.com/nightx24/Melora/releases/latest"><img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/nightx24/Melora/total?style=for-the-badge&label=DOWNLOADS(GH)" >
+<img alt="GitHub Release" src="https://img.shields.io/github/v/release/nightx24/Melora?display_name=release&style=for-the-badge&color=f01d7c" ></a>
+<img alt="GitHub License" src="https://img.shields.io/github/license/nightx24/Melora?style=for-the-badge&color=1881cc" > <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/nightx24/Melora/checkout.yml?style=for-the-badge" > <br><img src=https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white > <img src=https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white /> <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"/>
 </p>
 
 
- **Bloomee** is an experimental, open-source music player designed to give you absolute freedom over your audio. Seamlessly mix your **local device music** with an infinite universe of streams powered by a secure, **Rust-backed plugin system**. No ads, no interruptions—just your tunes, your way. 🌼🎵
+ **Melora** is an experimental, open-source music player designed to give you absolute freedom over your audio. Seamlessly mix your **local device music** with an infinite universe of streams powered by a secure, **Rust-backed plugin system**. No ads, no interruptions—just your tunes, your way. 🌼🎵
 
 </div>
 
@@ -75,7 +74,7 @@
   </a>
   &nbsp;
   <a href="https://github.com/nightx24/Melora/releases/latest">
-    <img alt="Download BloomeeTunes" src="https://a.fsdn.com/con/app/sf-download-button" height="40">
+    <img alt="Download Melora" src="https://a.fsdn.com/con/app/sf-download-button" height="40">
   </a>
 </p>
 <p align="center">
@@ -105,6 +104,6 @@ Contributing to Melora is a great way to learn **Flutter, clean architecture, an
 
 Melora is maintained by **nightx24**.
 
-Special thanks to **Hemant Karya**, the original developer of BloomeeTunes, for the foundation of this project.
+Thanks to **HemantKArya** for the source code.
 
 <p align="center"><i>Made with ❤️ for Melora</i></p>
