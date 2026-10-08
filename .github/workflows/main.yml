@@ -53,17 +53,21 @@ jobs:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
-          if [[ -n "$KEY_STORE" && -n "$KEY_PASSWORD" && -n "$STORE_PASSWORD" && -n "$KEY_ALIAS" ]]; then
-            echo "$KEY_STORE" | base64 --decode > android/bloomee.jks
-            cat > android/key.properties <<EOF
+          test -n "$KEY_STORE" || { echo "::error::KEY_STORE secret is not configured."; exit 1; }
+          test -n "$KEY_PASSWORD" || { echo "::error::KEY_PASSWORD secret is not configured."; exit 1; }
+          test -n "$STORE_PASSWORD" || { echo "::error::STORE_PASSWORD secret is not configured."; exit 1; }
+          test -n "$KEY_ALIAS" || { echo "::error::KEY_ALIAS secret is not configured."; exit 1; }
+
+          echo "$KEY_STORE" | base64 --decode > android/melora.jks
+
+          cat > android/key.properties <<EOF
+          storeFile=melora.jks
           keyPassword=$KEY_PASSWORD
           storePassword=$STORE_PASSWORD
           keyAlias=$KEY_ALIAS
           EOF
-            echo "Release signing configured."
-          else
-            echo "No complete release keystore configured; using the project's configured Gradle signing behavior."
-          fi
+
+          echo "Stable Melora release signing configured."
 
       - name: Build Android
         run: flutter build apk --release --split-per-abi --build-number "${{ github.run_number }}"
@@ -80,9 +84,9 @@ jobs:
       - name: Rename APKs
         run: |
           cd build/app/outputs/flutter-apk
-          mv app-armeabi-v7a-release.apk "melora_android_v${VERSION}+${{ github.run_number }}_armeabi-v7a.apk"
-          mv app-arm64-v8a-release.apk "melora_android_v${VERSION}+${{ github.run_number }}_arm64-v8a.apk"
-          mv app-x86_64-release.apk "melora_android_v${VERSION}+${{ github.run_number }}_x86_64.apk"
+          mv app-armeabi-v7a-release.apk "melora_android_v__VERSION__+${{ github.run_number }}_armeabi-v7a.apk"
+          mv app-arm64-v8a-release.apk "melora_android_v__VERSION__+${{ github.run_number }}_arm64-v8a.apk"
+          mv app-x86_64-release.apk "melora_android_v__VERSION__+${{ github.run_number }}_x86_64.apk"
 
       - name: Create build-number.txt
         run: echo "${{ github.run_number }}" > build-number.txt
@@ -92,20 +96,20 @@ jobs:
         with:
           name: Release-Android
           path: |
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_armeabi-v7a.apk
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_arm64-v8a.apk
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_x86_64.apk
+            build/app/outputs/flutter-apk/melora_android_v__VERSION__+${{ github.run_number }}_armeabi-v7a.apk
+            build/app/outputs/flutter-apk/melora_android_v__VERSION__+${{ github.run_number }}_arm64-v8a.apk
+            build/app/outputs/flutter-apk/melora_android_v__VERSION__+${{ github.run_number }}_x86_64.apk
             build-number.txt
 
       - name: Publish Android prerelease
         uses: ncipollo/release-action@v1
         with:
           artifacts: |
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_armeabi-v7a.apk
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_arm64-v8a.apk
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_x86_64.apk
+            build/app/outputs/flutter-apk/melora_android_v__VERSION__+${{ github.run_number }}_armeabi-v7a.apk
+            build/app/outputs/flutter-apk/melora_android_v__VERSION__+${{ github.run_number }}_arm64-v8a.apk
+            build/app/outputs/flutter-apk/melora_android_v__VERSION__+${{ github.run_number }}_x86_64.apk
             build-number.txt
-          tag: v${{ env.VERSION }}+${{ github.run_number }}
+          tag: v__VERSION__+${{ github.run_number }}
           token: ${{ github.token }}
           prerelease: true
           allowUpdates: true
