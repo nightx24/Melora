@@ -126,7 +126,7 @@ class About extends StatelessWidget {
                       spacing: 6,
                       children: [
                         Text(
-                          'BloomeeTunes',
+                          'Melora',
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
@@ -177,7 +177,7 @@ class About extends StatelessWidget {
                     const SizedBox(width: 12),
                     Flexible(
                       child: Text(
-                        '@iamhemantindia',
+                        '@nightx24',
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: kPrimaryTextColor,
@@ -207,36 +207,10 @@ class About extends StatelessWidget {
                 runSpacing: 12.0, // Spacing when items wrap to the next line
                 spacing: 12.0, // Horizontal spacing
                 children: [
-                  // Maintainer opens GitHub account
                   _InfoPill(
-                      icon: Icons.shield_outlined,
-                      text: 'Maintainer',
-                      tooltip: l10n.aboutFollowGitHub,
-                      onTap: () {
-                        launchUrl(Uri.parse('https://github.com/HemantKArya'),
-                            mode: LaunchMode.externalApplication);
-                      }),
-                  // Short label 'Email' opens mail composer
-                  _InfoPill(
-                      icon: FontAwesome.x_twitter_brand,
-                      text: 'Contact',
-                      tooltip: l10n.aboutSendInquiry,
-                      onTap: () {
-                        launchUrl(
-                          Uri.parse('https://x.com/iamhemantindia'),
-                          mode: LaunchMode.externalApplication,
-                        );
-                      }),
-                  // Short label 'Linkedin' opens Linkedin profile
-                  _InfoPill(
-                      icon: FontAwesome.linkedin_brand,
-                      text: 'Linkedin',
-                      tooltip: l10n.aboutCreativeHighlights,
-                      onTap: () {
-                        launchUrl(
-                            Uri.parse('https://linkedin.com/in/iamhemantindia'),
-                            mode: LaunchMode.externalApplication);
-                      }),
+                    icon: Icons.shield_outlined,
+                    text: 'Maintainer · nightx24',
+                  ),
                 ],
               )
             ],
@@ -278,12 +252,7 @@ class About extends StatelessWidget {
             child: InkWell(
               // increase the ink response radius to match the larger pill
               borderRadius: BorderRadius.circular(32.0),
-              onTap: () {
-                launchUrl(
-                  Uri.parse("https://hemantkarya.github.io/BloomeeTunes/"),
-                  mode: LaunchMode.externalApplication,
-                );
-              },
+              onTap: null,
               child: Container(
                 // increased padding for a larger touch target
                 padding:
@@ -301,7 +270,7 @@ class About extends StatelessWidget {
                         color: kPrimaryTextColor, size: 20),
                     const SizedBox(width: 10),
                     Text(
-                      l10n.aboutTipButton,
+                      'Thanks to the original developer',
                       style: const TextStyle(
                         color: kPrimaryTextColor,
                         fontSize: 18,
@@ -317,7 +286,7 @@ class About extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          l10n.aboutTipDesc,
+          'Special thanks to Hemant Karya for creating the original project that Melora builds upon.',
           textAlign: TextAlign.center,
           style: const TextStyle(
               color: kSecondaryTextColor, fontSize: 14, fontFamily: 'Gilroy'),
@@ -337,7 +306,7 @@ class About extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               onTap: () {
                 launchUrl(
-                    Uri.parse("https://hemantkarya.github.io/BloomeeTunes/"),
+                    Uri.parse("https://github.com/nightx24/Melora"),
                     mode: LaunchMode.externalApplication);
               },
               child: Row(
@@ -346,7 +315,7 @@ class About extends StatelessWidget {
                   const Icon(MingCute.github_fill,
                       color: kSecondaryTextColor, size: 16),
                   const SizedBox(width: 8),
-                  Text(l10n.aboutGitHub,
+                  Text('Melora on GitHub',
                       style: const TextStyle(
                           color: kSecondaryTextColor,
                           fontSize: 12,
