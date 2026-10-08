@@ -1,4 +1,4 @@
-name: "Build & Release"
+name: "Build Android"
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: melora-release-${{ github.ref }}
+  group: melora-android-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -106,53 +106,3 @@ jobs:
           token: ${{ github.token }}
           prerelease: true
           allowUpdates: true
-
-  build-linux:
-    name: Build Linux
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.35.4'
-          channel: stable
-          cache: true
-
-      - name: Install Linux Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
-
-      - name: Install Dependencies
-        run: flutter pub get
-
-      - name: Extract version
-        run: |
-          VERSION="$(awk '/^version:/ {print $2; exit}' pubspec.yaml | cut -d+ -f1)"
-          test -n "$VERSION"
-          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-
-      - name: Build Linux
-        run: flutter build linux --release --build-number "${{ github.run_number }}"
-
-      - name: Compress Linux Build
-        run: tar -czf "melora_linux_x64_v${VERSION}+${{ github.run_number }}.tar.gz" -C build/linux/x64/release/bundle .
-
-      - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Release-Linux
-          path: melora_linux_x64_v${{ env.VERSION }}+${{ github.run_number }}.tar.gz
-
-      - name: Publish Linux prerelease
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: melora_linux_x64_v${{ env.VERSION }}+${{ github.run_number }}.tar.gz
-          tag: v${{ env.VERSION }}+${{ github.run_number }}
-          token: ${{ github.token }}
-          prerelease: true
-          allowUpdates: true
-          omitBodyDuringUpdate: true
