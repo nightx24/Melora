@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:Bloomee/core/models/exported.dart';
 import 'package:Bloomee/services/meta_resolver/cross_plugin_resolver.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
