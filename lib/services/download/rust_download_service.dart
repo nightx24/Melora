@@ -9,8 +9,10 @@ class RustDownloadService {
   DownloadManager? _manager;
   Future<void>? _initializing;
   StreamSubscription<DownloadManagerEvent>? _eventSubscription;
-  final StreamController<DownloadManagerEvent> _events =
-      StreamController<DownloadManagerEvent>.broadcast();
+  StreamController<DownloadManagerEvent>? _eventsController;
+
+  StreamController<DownloadManagerEvent> get _events =>
+      _eventsController ??= StreamController<DownloadManagerEvent>.broadcast();
 
   bool get isInitialized => _manager != null;
 
@@ -130,7 +132,11 @@ class RustDownloadService {
     await _eventSubscription?.cancel();
     _eventSubscription = null;
     _initializing = null;
-    await _events.close();
+    final eventsController = _eventsController;
+    _eventsController = null;
+    if (eventsController != null && !eventsController.isClosed) {
+      await eventsController.close();
+    }
     _manager = null;
   }
 }
