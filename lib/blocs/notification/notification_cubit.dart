@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:Bloomee/core/models/app_notification.dart';
-import 'package:Bloomee/services/bloomee_updater_tools.dart';
 import 'package:Bloomee/services/db/dao/notification_dao.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,19 +15,8 @@ class NotificationCubit extends Cubit<NotificationState> {
   NotificationCubit({required NotificationDAO notificationDao})
       : _notificationDao = notificationDao,
         super(NotificationInitial()) {
-    getLatestVersion().then((value) {
-      if (value["results"]) {
-        if (int.parse(value["currBuild"]) < int.parse(value["newBuild"])) {
-          _notificationDao.putNotification(
-            title: "Update Available",
-            body:
-                "New Version of Bloomee🌸 is now available!! Version: ${value["newVer"]} + ${value["newBuild"]}",
-            type: "app_update",
-            unique: true,
-          );
-        }
-      }
-    });
+    // Automatic upstream version notifications are disabled for Melora.
+    // Updates are checked manually from Settings when needed.
     getNotification();
   }
   void getNotification() async {
