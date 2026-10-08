@@ -2,14 +2,14 @@
 
 <img src="./assets/docs/bloomeetunes_new_banner.png" alt="Melora Banner" width="100%">
 
-# 🌸 Melora 
+# ☘︎ Melora 
 
 **A unified local and plugin-first streaming music player built with Flutter & Rust.**
 
 **Maintainer:** `nightx24`  
 
-> **Melora** is a community-maintained fork of Melora focused on bug fixes, maintenance, modernization, and additional improvements.  
-> **Thanks to the original developer, Hemant Karya, for creating the project Melora builds upon.**
+> **Melora** is a community-maintained music player focused on bug fixes, maintenance, modernization, and additional improvements.  
+> **Thanks to HemantKArya for the source code.**
 
 <p align="center"><a href="https://github.com/nightx24/Melora/releases/latest"><img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/nightx24/Melora/total?style=for-the-badge&label=DOWNLOADS(GH)" >
 <img alt="GitHub Release" src="https://img.shields.io/github/v/release/nightx24/Melora?display_name=release&style=for-the-badge&color=f01d7c" ></a>
@@ -29,7 +29,7 @@
   <p float="left">
     <img src="./assets/docs/playerview.png" width="48%" />
     <img src="./assets/docs/lyricsview1.png" width="48%" />
-<img src="./assets/docs/banner2BloomeScrnShot.png" width="90%"/>
+<img src="./assets/docs/banner2MeloraScrnShot.png" width="90%"/>
   </p>
 </div>
 
