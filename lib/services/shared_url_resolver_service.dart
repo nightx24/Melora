@@ -91,9 +91,30 @@ class SharedUrlResolverService {
     final priority = await _getResolverPriority();
 
     final resolvers = available
-        .where((p) =>
-            p.pluginType == PluginType.contentResolver &&
-            loadedIds.contains(p.manifest.id))
+        .where((p) => p.pluginType == PluginType.contentResolver)
+        .toList(growable: false);
+
+    // A freshly bootstrapped plugin can be installed but not loaded yet.
+    // Shared-link handling should recover that state instead of reporting
+    // "no resolver" until the next app launch.
+    for (final plugin in activeResolvers) {
+      if (loadedIds.contains(plugin.manifest.id)) continue;
+      try {
+        await pluginService.loadPlugin(
+          pluginId: plugin.manifest.id,
+          pluginType: plugin.pluginType,
+        );
+      } catch (e) {
+        log(
+          'Failed to load shared-link resolver ' + plugin.manifest.id + ': ' + e.toString(),
+          name: 'SharedUrlResolverService',
+        );
+      }
+    }
+
+    final loadedAfterRecovery = pluginService.getLoadedPlugins().toSet();
+    final activeResolvers = resolvers
+        .where((p) => loadedAfterRecovery.contains(p.manifest.id))
         .toList(growable: false);
 
     final claimed = <PluginInfo>[];
