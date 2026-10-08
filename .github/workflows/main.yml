@@ -39,6 +39,9 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Regenerate Dart Code
+        run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Extract version
         shell: bash
         run: |
