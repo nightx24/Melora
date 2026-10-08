@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -9,7 +8,6 @@ import java.io.FileInputStream
 import java.util.Properties
 
 val keystorePropertiesFile = rootProject.file("key.properties")
-
 
 android {
     namespace = "com.melora.music"
@@ -26,10 +24,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.melora.music"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -44,6 +39,7 @@ android {
             isUniversalApk = false
         }
     }
+
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
@@ -51,31 +47,15 @@ android {
 
     signingConfigs {
         if (keystorePropertiesFile.exists()) {
-            println("   ✅ key.properties found - configuring release signing")
             val keystoreProperties = Properties()
             keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
-            val keystorePath = keystoreProperties["bloomee.jks"] as String?
-            val keyAliasValue = keystoreProperties["keyAlias"] as String?
-
-            println("   Keystore file path: $keystorePath")
-            println("   Key alias: $keyAliasValue")
-
-            if (keystorePath != null) {
-                val keystoreFile = file(keystorePath)
-                println("   Keystore file exists: ${keystoreFile.exists()}")
-                println("   Keystore file path: ${keystoreFile.absolutePath}")
-            }
-
             create("release") {
-                keyAlias = keystoreProperties["keyAlias"] as String?
-                keyPassword = keystoreProperties["keyPassword"] as String?
-                storeFile = rootProject.file("bloomee.jks")
-                storePassword = keystoreProperties["storePassword"] as String?
-                println("   ✅ Release signing config created successfully")
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
             }
-        } else {
-            println("   ❌ key.properties not found - using debug signing")
         }
     }
 
@@ -83,17 +63,13 @@ android {
         release {
             if (keystorePropertiesFile.exists()) {
                 signingConfig = signingConfigs.getByName("release")
-                println("   📦 Release build: Using release signing config")
-            }
-            else{
-                signingConfig = signingConfigs.getByName("debug")
-                println("   📦 Release build: Using debug signing config (no keystore)")
+            } else {
+                throw GradleException("Release signing is required. Configure android/key.properties and the Melora release keystore.")
             }
         }
     }
 
-    // To reduce the size of the APK, since from AGP 8.0.0 the default value of useLegacyPackaging is false.
-     packagingOptions {
+    packagingOptions {
         jniLibs {
             useLegacyPackaging = true
         }
