@@ -16,7 +16,8 @@ class NotificationCubit extends Cubit<NotificationState> {
       : _notificationDao = notificationDao,
         super(NotificationInitial()) {
     // Automatic upstream version notifications are disabled for Melora.
-    // Updates are checked manually from Settings when needed.
+    // Remove any legacy update entries created by older versions.
+    _notificationDao.clearByType("app_update");
     getNotification();
   }
   void getNotification() async {
