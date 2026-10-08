@@ -270,7 +270,7 @@ class About extends StatelessWidget {
                         color: kPrimaryTextColor, size: 20),
                     const SizedBox(width: 10),
                     Text(
-                      'Thanks to the original developer',
+                      'Thanks to HemantKArya for the source code',
                       style: const TextStyle(
                         color: kPrimaryTextColor,
                         fontSize: 18,
@@ -286,7 +286,7 @@ class About extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          'Special thanks to Hemant Karya for creating the original project that Melora builds upon.',
+          'Thanks to HemantKArya for the source code.',
           textAlign: TextAlign.center,
           style: const TextStyle(
               color: kSecondaryTextColor, fontSize: 14, fontFamily: 'Gilroy'),
@@ -649,7 +649,7 @@ class _GentleRotatingFlowerState extends State<GentleRotatingFlower>
             child: Transform.scale(
               scale: scale,
               child: Text(
-                "🌸",
+                "☘︎",
                 style: TextStyle(fontSize: widget.size),
               ),
             ),
