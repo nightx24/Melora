@@ -1,6 +1,5 @@
 <div align="center">
 
-<img src="./assets/docs/bloomeetunes_new_banner.png" alt="Melora Banner" width="100%">
 
 # ☘︎ Melora 
 
