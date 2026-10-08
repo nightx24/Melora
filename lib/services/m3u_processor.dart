@@ -122,28 +122,36 @@ Map<String, dynamic> parseM3UToJson(String m3uContent) {
 
       // Handle custom meta tags
       if (line.startsWith('#BLOOMEE-GENERATED_BY:')) {
-        meta['generated_by'] = line.split(':').last.trim();
+        meta['generated_by'] = line.substring('#BLOOMEE-GENERATED_BY:'.length).trim();
       } else if (line.startsWith('#BLOOMEE-VERSION:')) {
-        meta['version'] = line.split(':').last.trim();
+        meta['version'] = line.substring('#BLOOMEE-VERSION:'.length).trim();
       } else if (line.startsWith('#BLOOMEE-EXPORTEDAT:')) {
-        meta['exportedAt'] = line.split(':').last.trim();
+        meta['exportedAt'] = line.substring('#BLOOMEE-EXPORTEDAT:'.length).trim();
       } else if (line.startsWith('#BLOOMEE-NOTE:')) {
-        meta['note'] = line.split(':').last.trim();
+        meta['note'] = line.substring('#BLOOMEE-NOTE:'.length).trim();
       } else if (line.startsWith('#PLAYLIST:')) {
-        playlistName = line.split(':').last.trim();
+        playlistName = line.substring('#PLAYLIST:'.length).trim();
       }
 
       // Handle media item fields
       else if (line.startsWith('#EXTINF:')) {
         final infoPart = line.substring(8);
-        final parts = infoPart.split(',');
-        if (parts.length != 2) {
+        final commaIndex = infoPart.indexOf(',');
+        if (commaIndex < 0) {
           throw FormatException("Invalid #EXTINF line: $line");
         }
-        currentDuration = num.tryParse(parts[0].trim()) ?? 0;
-        final titleArtistPart = parts[1].trim();
+        currentDuration = num.tryParse(infoPart.substring(0, commaIndex).trim()) ?? 0;
+        final titleArtistPart = infoPart.substring(commaIndex + 1).trim();
 
-        final artistTitleSplit = titleArtistPart.split(' - ');
+        // Split on the last artist/title separator so artist names containing
+        // " - " remain intact.
+        final separatorIndex = titleArtistPart.lastIndexOf(' - ');
+        final artistTitleSplit = separatorIndex > 0
+            ? <String>[
+                titleArtistPart.substring(0, separatorIndex),
+                titleArtistPart.substring(separatorIndex + 3),
+              ]
+            : <String>[titleArtistPart];
         currentItem = {
           'title': artistTitleSplit.length > 1
               ? artistTitleSplit[1]
@@ -154,13 +162,13 @@ Map<String, dynamic> parseM3UToJson(String m3uContent) {
           'duration': currentDuration,
         };
       } else if (line.startsWith('#EXTALB:')) {
-        currentItem['album'] = line.split(':').last.trim();
+        currentItem['album'] = line.substring('#EXTALB:'.length).trim();
       } else if (line.startsWith('#EXTART:')) {
-        currentItem['artist'] = line.split(':').last.trim();
+        currentItem['artist'] = line.substring('#EXTART:'.length).trim();
       } else if (line.startsWith('#EXTGENRE:')) {
-        currentItem['genre'] = line.split(':').last.trim();
+        currentItem['genre'] = line.substring('#EXTGENRE:'.length).trim();
       } else if (line.startsWith('#EXTALBUMARTURL:')) {
-        currentItem['artURL'] = line.split(':').last.trim();
+        currentItem['artURL'] = line.substring('#EXTALBUMARTURL:'.length).trim();
       }
 
       // Streaming URL Line
