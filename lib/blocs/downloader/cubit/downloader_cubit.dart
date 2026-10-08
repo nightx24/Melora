@@ -102,16 +102,27 @@ class DownloaderCubit extends Cubit<DownloaderState> {
   }
 
   Future<Directory> _getDownloadDirectory() async {
-    if (Platform.isAndroid || Platform.isIOS) {
-      final directory = (await getDownloadsDirectory()) ??
-          await getApplicationDocumentsDirectory();
+    // Respect an explicitly configured path on every platform. The previous
+    // Android/iOS branch ignored downPathSetting, making the download-folder
+    // setting appear to work while downloads still went to the default folder.
+    final configuredPath = (await _settingsDao.getSettingStr(
+      SettingKeys.downPathSetting,
+    ))
+        ?.trim();
+
+    if (configuredPath != null && configuredPath.isNotEmpty) {
+      final directory = Directory(configuredPath);
+      await directory.create(recursive: true);
       return directory;
     }
-    final p = await _settingsDao.getSettingStr(SettingKeys.downPathSetting);
-    if (p != null) {
-      return Directory(p);
-    }
-    return await getApplicationDocumentsDirectory();
+
+    final directory = (Platform.isAndroid || Platform.isIOS)
+        ? (await getDownloadsDirectory()) ??
+            await getApplicationDocumentsDirectory()
+        : await getApplicationDocumentsDirectory();
+
+    await directory.create(recursive: true);
+    return directory;
   }
 
   void _setupLibrarySubscription() {
