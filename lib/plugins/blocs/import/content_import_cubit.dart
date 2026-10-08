@@ -15,7 +15,7 @@ import 'package:Bloomee/src/rust/api/plugin/types.dart';
 import 'package:Bloomee/src/rust/api/plugin/models.dart';
 
 const int _kResolutionConcurrency = 5;
-const Duration _kPluginTimeout = Duration(seconds: 10);
+const Duration _kPluginTimeout = Duration(seconds: 60);
 const double _kMinConfidence = 0.45;
 const int _kMaxCandidatesPerTrack = 5;
 
@@ -338,14 +338,17 @@ class ContentImportCubit extends Cubit<ContentImportState> {
         await _playlistDao.updatePlaylistThumbnail(playlistId, thumbUrl);
       }
 
-      var savedCount = 0;
-      for (final entry in state.tracks) {
-        final track = entry.effectiveTrack;
-        if (track != null) {
-          await _playlistDao.addTrackToPlaylist(playlistId, track);
-          savedCount++;
-        }
+      final tracksToSave = state.tracks
+          .map((entry) => entry.effectiveTrack)
+          .whereType<Track>()
+          .toList(growable: false);
+
+      // Persist the whole resolved batch in one DB operation. Large imports
+      // (300+ tracks) previously performed one transaction per track.
+      if (tracksToSave.isNotEmpty) {
+        await _playlistDao.addTracksToPlaylist(playlistId, tracksToSave);
       }
+      final savedCount = tracksToSave.length;
 
       log('Saved $savedCount tracks to "$playlistName".',
           name: 'ContentImportCubit');
