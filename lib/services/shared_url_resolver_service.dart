@@ -97,7 +97,7 @@ class SharedUrlResolverService {
     // A freshly bootstrapped plugin can be installed but not loaded yet.
     // Shared-link handling should recover that state instead of reporting
     // "no resolver" until the next app launch.
-    for (final plugin in activeResolvers) {
+    for (final plugin in resolvers) {
       if (loadedIds.contains(plugin.manifest.id)) continue;
       try {
         await pluginService.loadPlugin(
@@ -119,7 +119,7 @@ class SharedUrlResolverService {
 
     final claimed = <PluginInfo>[];
     final fallback = <PluginInfo>[];
-    for (final plugin in resolvers) {
+    for (final plugin in activeResolvers) {
       if (_resolverClaimsUrl(plugin, url)) {
         claimed.add(plugin);
       } else {
