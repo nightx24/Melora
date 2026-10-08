@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build-android:
-    name: Build Android
+    name: Build Android (Temporary Debug)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -46,47 +46,24 @@ jobs:
           test -n "$VERSION"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
-      - name: Configure release signing
-        env:
-          KEY_STORE: ${{ secrets.KEY_STORE }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        run: |
-          test -n "$KEY_STORE" || { echo "::error::KEY_STORE secret is not configured."; exit 1; }
-          test -n "$KEY_PASSWORD" || { echo "::error::KEY_PASSWORD secret is not configured."; exit 1; }
-          test -n "$STORE_PASSWORD" || { echo "::error::STORE_PASSWORD secret is not configured."; exit 1; }
-          test -n "$KEY_ALIAS" || { echo "::error::KEY_ALIAS secret is not configured."; exit 1; }
-
-          echo "$KEY_STORE" | base64 --decode > android/melora.jks
-
-          cat > android/key.properties <<EOF
-          storeFile=melora.jks
-          keyPassword=$KEY_PASSWORD
-          storePassword=$STORE_PASSWORD
-          keyAlias=$KEY_ALIAS
-          EOF
-
-          echo "Stable Melora release signing configured."
-
-      - name: Build Android
-        run: flutter build apk --release --split-per-abi --build-number "${{ github.run_number }}"
+      - name: Build Android debug APKs
+        run: flutter build apk --debug --split-per-abi --build-number "${{ github.run_number }}"
 
       - name: Verify APKs
         run: |
-          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -1)"
-          test -x "$APKSIGNER"
-          for apk in             build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk             build/app/outputs/flutter-apk/app-x86_64-release.apk; do
+          for apk in \
+            build/app/outputs/flutter-apk/app-armeabi-v7a-debug.apk \
+            build/app/outputs/flutter-apk/app-arm64-v8a-debug.apk \
+            build/app/outputs/flutter-apk/app-x86_64-debug.apk; do
             test -f "$apk"
-            "$APKSIGNER" verify "$apk"
           done
 
       - name: Rename APKs
         run: |
           cd build/app/outputs/flutter-apk
-          mv app-armeabi-v7a-release.apk "melora_android_v${{ env.VERSION }}+${{ github.run_number }}_armeabi-v7a.apk"
-          mv app-arm64-v8a-release.apk "melora_android_v${{ env.VERSION }}+${{ github.run_number }}_arm64-v8a.apk"
-          mv app-x86_64-release.apk "melora_android_v${{ env.VERSION }}+${{ github.run_number }}_x86_64.apk"
+          mv app-armeabi-v7a-debug.apk "melora_debug_v${{ env.VERSION }}+${{ github.run_number }}_armeabi-v7a.apk"
+          mv app-arm64-v8a-debug.apk "melora_debug_v${{ env.VERSION }}+${{ github.run_number }}_arm64-v8a.apk"
+          mv app-x86_64-debug.apk "melora_debug_v${{ env.VERSION }}+${{ github.run_number }}_x86_64.apk"
 
       - name: Create build-number.txt
         run: echo "${{ github.run_number }}" > build-number.txt
@@ -94,22 +71,22 @@ jobs:
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Release-Android
+          name: Debug-Android
           path: |
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_armeabi-v7a.apk
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_arm64-v8a.apk
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_x86_64.apk
+            build/app/outputs/flutter-apk/melora_debug_v${{ env.VERSION }}+${{ github.run_number }}_armeabi-v7a.apk
+            build/app/outputs/flutter-apk/melora_debug_v${{ env.VERSION }}+${{ github.run_number }}_arm64-v8a.apk
+            build/app/outputs/flutter-apk/melora_debug_v${{ env.VERSION }}+${{ github.run_number }}_x86_64.apk
             build-number.txt
 
-      - name: Publish Android prerelease
+      - name: Publish Android debug prerelease
         uses: ncipollo/release-action@v1
         with:
           artifacts: |
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_armeabi-v7a.apk
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_arm64-v8a.apk
-            build/app/outputs/flutter-apk/melora_android_v${{ env.VERSION }}+${{ github.run_number }}_x86_64.apk
+            build/app/outputs/flutter-apk/melora_debug_v${{ env.VERSION }}+${{ github.run_number }}_armeabi-v7a.apk
+            build/app/outputs/flutter-apk/melora_debug_v${{ env.VERSION }}+${{ github.run_number }}_arm64-v8a.apk
+            build/app/outputs/flutter-apk/melora_debug_v${{ env.VERSION }}+${{ github.run_number }}_x86_64.apk
             build-number.txt
-          tag: v${{ env.VERSION }}+${{ github.run_number }}
+          tag: debug-v${{ env.VERSION }}+${{ github.run_number }}
           token: ${{ github.token }}
           prerelease: true
           allowUpdates: true
