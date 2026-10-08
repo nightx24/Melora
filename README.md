@@ -2,20 +2,21 @@
 
 <img src="./assets/docs/bloomeetunes_new_banner.png" alt="BloomeeTunes Banner" width="100%">
 
-# 🌸 Bloomee 
+# 🌸 Melora 
 
 **A unified local and plugin-first streaming music player built with Flutter & Rust.**
 
-> **Melora** is a community-maintained fork of BloomeeTunes focused on bug fixes, maintenance, modernization, and additional improvements.
+**Maintainer:** `nightx24`  
+
+> **Melora** is a community-maintained fork of BloomeeTunes focused on bug fixes, maintenance, modernization, and additional improvements.  
+> **Thanks to the original developer, Hemant Karya, for creating the project Melora builds upon.**
 
 <p align="center"><img src=https://img.shields.io/sourceforge/dt/bloomee?style=for-the-badge&logoSize=auto&label=DOWNLOADS(SF)
- /> <a href="https://github.com/HemantKArya/BloomeeTunes/releases/latest"><img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/HemantKArya/BloomeeTunes/total?style=for-the-badge&label=DOWNLOADS(GH)" >
+ /> <a href="https://github.com/nightx24/Melora/releases/latest"><img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/HemantKArya/BloomeeTunes/total?style=for-the-badge&label=DOWNLOADS(GH)" >
 <img alt="GitHub Release" src="https://img.shields.io/github/v/release/HemantKArya/BloomeeTunes?display_name=release&style=for-the-badge&color=f01d7c" ></a>
 <img alt="GitHub License" src="https://img.shields.io/github/license/HemantKArya/BloomeeTunes?style=for-the-badge&color=1881cc" > <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/HemantKArya/BloomeeTunes/checkout.yml?style=for-the-badge" > <br><img src=https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white > <img src=https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white /> <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"/>
 </p>
 
-
-<a href="https://trendshift.io/repositories/11533" target="_blank"><img src="https://trendshift.io/api/badge/repositories/11533" alt="Bloomee on Trendshift" width="250" height="55"/></a>
 
  **Bloomee** is an experimental, open-source music player designed to give you absolute freedom over your audio. Seamlessly mix your **local device music** with an infinite universe of streams powered by a secure, **Rust-backed plugin system**. No ads, no interruptions—just your tunes, your way. 🌼🎵
 
@@ -32,16 +33,6 @@
 <img src="./assets/docs/banner2BloomeScrnShot.png" width="90%"/>
   </p>
 </div>
-
----
-> ⚠️ **SECURITY WARNING: BEWARE OF FAKE WEBSITES!** ⚠️    
-> Due to the app's popularity, several unofficial websites claim to be the "official" Bloomee site. The ONLY official websites maintained by me are:
-> 
-> - https://bloomeex.org
-> - https://hemantkarya.github.io/BloomeeTunes/
->
-> These two URLs are the only official and safe sites for Bloomee. Do not trust other websites claiming to be official — unofficial sites may distribute modified APKs or malware. I am **not responsible** for any damage, privacy loss, or issues caused by downloading the app from third-party sources.
----
 
 ## 🚀 Features & Roadmap
 
@@ -79,66 +70,41 @@
 <h4 align="center">Available for Android, Windows & Linux (Dev) 😍</h4>
 
 <p align="center">
-  <a href="https://github.com/HemantKArya/BloomeeTunes/releases/latest">
+  <a href="https://github.com/nightx24/Melora/releases/latest">
     <img src="https://img.shields.io/badge/GitHub_Releases-100000?style=for-the-badge&logo=github&logoColor=white" height="40"/>
   </a>
   &nbsp;
-  <a href="https://sourceforge.net/projects/bloomee/files/latest/download">
+  <a href="https://github.com/nightx24/Melora/releases/latest">
     <img alt="Download BloomeeTunes" src="https://a.fsdn.com/con/app/sf-download-button" height="40">
   </a>
 </p>
 <p align="center">
-  <a href="https://apt.izzysoft.de/fdroid/index/apk/ls.bloomee.musicplayer">
+  <a href="https://github.com/nightx24/Melora/releases/latest">
     <img alt="izzyondroid" src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroidButtonGreyBorder.svg" height="45"/>
   </a>
 </p>
 
 ---
 
-## 💖 Support the Development
-
-Bloomee is a passion project. I spend countless hours building, refining, and fixing bugs to give everyone a premium, ad-free music experience. If you love the app and want to see it grow, consider supporting my work! 
-
-Every contribution, big or small, keeps the music playing. ☕🎶
-
-<p align="center">
-  <a href="https://liberapay.com/hemantkarya/donate">
-    <img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
-  </a>
-</p>
-<p align="center">
-  <img src="https://img.shields.io/liberapay/receives/hemantkarya?style=for-the-badge"> 
-  <img src="https://img.shields.io/liberapay/patrons/hemantkarya?style=for-the-badge">
-</p>
-
----
-
-## 🤝 Contribute to Bloomee
+## 🤝 Contribute to Melora
 
 **Every note counts!** Whether you're a seasoned developer or a beginner (I am relatively new to Flutter myself!), your pull requests, bug reports, and feature suggestions are highly appreciated. 
 
-Contributing to Bloomee is a great way to learn **Flutter, clean architecture, and BLoC patterns** in a real-world codebase.
+Contributing to Melora is a great way to learn **Flutter, clean architecture, and BLoC patterns** in a real-world codebase.
 
 1. **Discuss:** Open an Issue first to discuss your idea.
 2. **Fork & Clone:** Fork the `main` branch.
 3. **Branch & Build:** Create your feature branch.
-4. **Pull Request:** Submit a PR and let your code join the Bloomee symphony!
+4. **Pull Request:** Submit a PR and let your code join the Melora project!
 
 *Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.*
 
 ---
 
-## 📫 Get in Touch
+## 🙏 Credits
 
-Have questions, feedback, or just want to say hi? Connect with me here:
+Melora is maintained by **nightx24**.
 
-<div align="center">
+Special thanks to **Hemant Karya**, the original developer of BloomeeTunes, for the foundation of this project.
 
-<a href="https://www.linkedin.com/in/iamhemantindia/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/></a>
-<a href="https://x.com/iamhemantindia/"><img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white"/></a>
-<a href="https://instagram.com/iamhemantindia/"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white"/></a>
-<a href="mailto:iamhemantindia@protonmail.com"><img src="https://img.shields.io/badge/ProtonMail-6D4AFF?style=for-the-badge&logo=protonmail&logoColor=white"/></a>
-
-</div>
-
-<p align="center"><i>Made with ❤️</i></p>
+<p align="center"><i>Made with ❤️ for Melora</i></p>
