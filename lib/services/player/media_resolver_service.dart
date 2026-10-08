@@ -111,12 +111,11 @@ class MediaResolverService {
       // startup or an auto-update. Recover once instead of failing playback.
       try {
         final available = await _pluginService.getAvailablePlugins();
-        final info = available.cast<dynamic?>().firstWhere(
-              (plugin) =>
-                  plugin != null && plugin.manifest.id == parts.pluginId,
-              orElse: () => null,
-            );
-        if (info != null) {
+        final matching = available
+            .where((plugin) => plugin.manifest.id == parts.pluginId)
+            .toList(growable: false);
+        if (matching.isNotEmpty) {
+          final info = matching.first;
           await _pluginService.loadPlugin(
             pluginId: parts.pluginId,
             pluginType: info.pluginType,
